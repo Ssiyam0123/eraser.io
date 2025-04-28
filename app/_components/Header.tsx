@@ -1,10 +1,11 @@
+import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 import React from "react";
 
 const Header = () => {
   return (
     <header className="bg-black">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="block text-teal-600" href="#">
+        <a className="block text-white" href="#">
           <span className="sr-only">Home</span>
           ERASIOR.IO
         </a>
@@ -77,17 +78,17 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
               <a
-                className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                className="block rounded-md bg-black px-5 py-2.5 text-sm font-medium text-white transition"
                 href="#"
               >
-                Login
+                <LoginLink>Login</LoginLink>
               </a>
 
               <a
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-black transition  sm:block"
                 href="#"
               >
-                Register
+                <RegisterLink>Register</RegisterLink>
               </a>
             </div>
 
