@@ -11,12 +11,15 @@ import React, { useEffect } from "react";
 export default function Dashboard() {
   const { user }: any = useKindeBrowserClient();
   const convex = useConvex();
-  const getUser = useQuery(api.user.getUser, { email: user?.email });
+  const getUser = useQuery(
+    api.user.getUser,
+    user?.email ? { email: user?.email } : "skip"
+  );
 
   const createUser = useMutation(api.user.createUser);
 
   const checkUser = async () => {
-    const result = await convex.query(api.user.getUser, { email:user?.email });
+    const result = await convex.query(api.user.getUser, { email: user?.email });
     if (!result?.length) {
       createUser({
         name: user?.given_name,
