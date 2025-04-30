@@ -58,7 +58,7 @@ export default function CreateTeam() {
             placeholder="Enter your team name"
             className="w-full text-black"
           />
-          <Button className="w-full bg-blue-700" onClick={handleSubmit}>
+          <Button disabled={!(teamName && teamName?.length>0)} className="w-full bg-blue-700" onClick={handleSubmit}>
             Submit
           </Button>
         </div>
