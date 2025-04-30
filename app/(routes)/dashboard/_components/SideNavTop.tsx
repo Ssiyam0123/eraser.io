@@ -1,4 +1,4 @@
-import { ArrowDownNarrowWide, Move, MoveDown, MoveUp } from "lucide-react";
+import { MoveDown, MoveUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   Popover,
@@ -10,44 +10,47 @@ import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 export interface TEAM {
-  createdBy: String,
-  teamName: String,
-  _id: string
+  createdBy: string;
+  teamName: string;
+  _id: string;
 }
 
 export default function SideNavTop({ user }) {
   const [open, setOpen] = useState(false);
-  const[teamList, setTeamList] = useState([])
-const convex = useConvex()
-  const getTeamList = async ()=>{
-    const result = await convex.query(api.teams.getTeam,{email:user?.email})
-    console.log(result)
-    setTeamList(result)
-    return result;
-  }
+  const [teamList, setTeamList] = useState<TEAM[]>();
+  const convex = useConvex();
+  const [selectedTeam, setSelectedTeam] = useState([0])
 
-  console.log(teamList)
+  const getTeamList = async () => {
+    const result = await convex.query(api.teams.getTeam, {
+      email: user?.email,
+    });
+    setTeamList(result);
+    if(result.length>0)  setSelectedTeam(result[0])
+  };
 
-useEffect(()=>{
-  user && getTeamList()
-},[])
+  console.log(selectedTeam)
 
+  useEffect(() => {
+    if (user?.email) getTeamList();
+  }, [user]);
 
-  //   console.log(open);
   return (
     <div>
       <Popover>
         <PopoverTrigger className="w-full">
-          <h1
+          <div
             onClick={() => setOpen(!open)}
             className="flex items-center justify-center cursor-pointer bg-gray-800 p-5 text-center gap-2"
           >
-            <h1 className="font-bold text-xl"> Esthiyaks Team</h1>
-            <h1>{open ? <MoveDown /> : <MoveUp />}</h1>
-          </h1>
+            <span className="font-bold text-xl">
+              {selectedTeam?.teamName}
+            </span>
+            <span>{open ? <MoveDown /> : <MoveUp />}</span>
+          </div>
         </PopoverTrigger>
         <PopoverContent>
-          <InsideHove teamList={teamList} user={user} />
+          <InsideHove selectedTeam={selectedTeam} setSelectedTeam={setSelectedTeam} teamList={teamList} user={user} />
         </PopoverContent>
       </Popover>
     </div>

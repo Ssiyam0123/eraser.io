@@ -1,12 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
-import { LogOut, LogOutIcon, Settings, User2 } from "lucide-react";
+import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
-export default function InsideHove({ user, teamList }) {
-  console.log(user);
+export default function InsideHove({
+  selectedTeam,
+  setSelectedTeam,
+  user,
+  teamList,
+}) {
+ 
+  // console.log(selectedTeam);
+  const handleTeamSelect = (team) => {
+    setSelectedTeam(team);
+  };
+
   const menu = [
     {
       name: "Join or Create Team",
@@ -19,48 +29,64 @@ export default function InsideHove({ user, teamList }) {
       path: "settings",
     },
   ];
+
   return (
     <div className="space-y-4">
+      {/* Team List */}
       <div className="space-y-2">
-        {
-          teamList?.map((list,i)=><div className="bg-blue-900 p-3 rounded-2xl font-bold">{list.teamName}</div>)
-        }
-      </div>
-      {/* <Separator className="my-4" /> */}
-      <div className="divider "></div>
-      <div>
-        {menu.map((item, i) => (
-          <h1 key={i} className="text-lg flex space-x-2 space-y-5">
-            <h5 className="text-lg cursor-pointer">{item.name}</h5>
-            <h5 className="text-lg cursor-pointer">{item.icon}</h5>
-          </h1>
+        {teamList?.map((team) => (
+          <div
+            key={team._id}
+            onClick={() => handleTeamSelect(team)}
+            className={`cursor-pointer p-3 rounded-2xl font-medium transition ${
+              selectedTeam._id === team._id && "bg-blue-900 text-gray-100"
+            }`}
+          >
+            {team.teamName}
+          </div>
         ))}
-        <h1 className="flex text-lg mb-9 cursor-pointer space-x-2">
-          <h1>Log out</h1>
+      </div>
+
+      <Separator className="my-4" />
+
+      {/* Menu */}
+      <div className="space-y-4">
+        {menu.map((item, i) => (
+          <div
+            key={i}
+            className="flex items-center justify-between text-lg cursor-pointer hover:text-green-500 transition"
+          >
+            <span>{item.name}</span>
+            <span>{item.icon}</span>
+          </div>
+        ))}
+
+        {/* Logout */}
+        <div className="flex items-center justify-between text-lg mt-6 cursor-pointer hover:text-red-500 transition">
+          <span>Log out</span>
           <LogoutLink>
             <LogOutIcon />
           </LogoutLink>
-        </h1>
-        <div className="divider "></div>
+        </div>
+      </div>
 
-        <h1 className="flex items-center">
-          <div className="mr-5">
-            {user && (
-              <Image
-                className="rounded-full"
-                alt="user logo"
-                height={30}
-                width={30}
-                src={user?.picture}
-              />
-            )}
-          </div>
+      <Separator className="my-4" />
 
-          <div className="">
-            <p className="text-sm font-semibold">{user?.given_name}</p>
-            <p>{user?.email}</p>
-          </div>
-        </h1>
+      {/* User Info */}
+      <div className="flex items-center gap-3">
+        {user && (
+          <Image
+            className="rounded-full"
+            alt="user logo"
+            height={30}
+            width={30}
+            src={user?.picture}
+          />
+        )}
+        <div>
+          <p className="text-sm font-semibold">{user?.given_name}</p>
+          <p className="text-sm text-gray-400">{user?.email}</p>
+        </div>
       </div>
     </div>
   );
