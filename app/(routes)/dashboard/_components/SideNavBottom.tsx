@@ -114,12 +114,12 @@ export default function SideNavBottom({
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <div className="bg-blue-700 rounded-2xl flex justify-between p-4">
+          <Button disabled={currentFileNum==5} className="bg-blue-700 rounded-2xl flex justify-between p-4 cursor-pointer">
             <p>New File </p>
             <p>
               <MoveDownIcon />
             </p>
-          </div>
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
