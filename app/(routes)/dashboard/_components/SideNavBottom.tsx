@@ -25,8 +25,13 @@ import { api } from "@/convex/_generated/api";
 import { json } from "stream/consumers";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Progress } from "@/components/ui/progress";
 
-export default function SideNavBottom({ currentTeamId }) {
+export default function SideNavBottom({
+  currentTeamId,
+  currentFileNum,
+  getFiles,
+}) {
   const [fileName, setFileName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const menu = [
@@ -62,10 +67,14 @@ export default function SideNavBottom({ currentTeamId }) {
     },
   ];
 
+
+  // console.log(currentTeamId)
+
   const convex = useConvex();
   const { user } = useKindeBrowserClient();
 
-  console.log(currentTeamId);
+  // console.log(currentTeamId);
+  // console.log(fileNum)
 
   const createFile = useMutation(api.files.createFile);
 
@@ -81,6 +90,7 @@ export default function SideNavBottom({ currentTeamId }) {
       whiteboard: "",
     }).then((res) => {
       // console.log(res);
+      // getFiles()
       if (res) {
         toast.success("File added successfully!!!");
         setIsOpen(false);
@@ -130,6 +140,21 @@ export default function SideNavBottom({ currentTeamId }) {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      <div className="mt-10 space-y-3">
+        <div>
+          <div>
+            <Progress value={currentFileNum * 20} />
+          </div>
+        </div>
+        <div>
+          <p>
+            <strong>{currentFileNum}</strong> out of <strong>5</strong> files
+            used
+          </p>
+          <p>upgrade your plan for unlimited access</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -11,11 +11,14 @@ export default function InsideHove({
   setSelectedTeam,
   user,
   teamList,
+  setCurrentTeamId
 }) {
  
   // console.log(selectedTeam);
   const handleTeamSelect = (team) => {
     setSelectedTeam(team);
+    setCurrentTeamId(team._id)
+    
   };
 
   const router = useRouter()

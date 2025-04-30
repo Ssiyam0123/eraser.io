@@ -1,4 +1,5 @@
 "use client";
+import Header from "@/app/_components/Header";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import {
@@ -7,6 +8,7 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs";
 import { useConvex, useMutation, useQuery } from "convex/react";
 import React, { useEffect } from "react";
+import DashboardHeader from "./_components/DashboardHeader";
 
 export default function Dashboard() {
   const { user }: any = useKindeBrowserClient();
@@ -36,9 +38,8 @@ export default function Dashboard() {
   }, [user]);
   return (
     <div>
-      <Button>
-        <LogoutLink>Logout</LogoutLink>
-      </Button>
+      {/* <Header/> */}
+      <DashboardHeader/>
     </div>
   );
 }

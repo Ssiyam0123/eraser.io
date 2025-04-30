@@ -15,11 +15,11 @@ export interface TEAM {
   _id: string;
 }
 
-export default function SideNavTop({ user }) {
+export default function SideNavTop({ user, setCurrentTeamId }) {
   const [open, setOpen] = useState(false);
   const [teamList, setTeamList] = useState<TEAM[]>();
   const convex = useConvex();
-  const [selectedTeam, setSelectedTeam] = useState<TEAM | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   const getTeamList = async () => {
     const result = await convex.query(api.teams.getTeam, {
@@ -35,11 +35,12 @@ export default function SideNavTop({ user }) {
     if (user?.email) getTeamList();
   }, [user]);
 
-  useEffect(() => {
-    if (selectedTeam?._id) {
-      localStorage.setItem("currentTeam", JSON.stringify(selectedTeam._id));
-    }
-  }, [selectedTeam]);
+  // useEffect(() => {
+  //   if (selectedTeam?._id) {
+  //     localStorage.setItem("currentTeam", JSON.stringify(selectedTeam._id));
+  //   }
+  //   console.log(selectedTeam)
+  // }, [selectedTeam]);
   
 
   return (
@@ -60,6 +61,7 @@ export default function SideNavTop({ user }) {
             setSelectedTeam={setSelectedTeam}
             teamList={teamList}
             user={user}
+            setCurrentTeamId={setCurrentTeamId}
           />
         </PopoverContent>
       </Popover>
