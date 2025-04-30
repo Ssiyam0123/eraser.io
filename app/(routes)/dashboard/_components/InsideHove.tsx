@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function InsideHove({
@@ -16,6 +17,12 @@ export default function InsideHove({
   const handleTeamSelect = (team) => {
     setSelectedTeam(team);
   };
+
+  const router = useRouter()
+
+  const handleRouting = (item)=>{
+router.push(`${item.path}`)
+  }
 
   const menu = [
     {
@@ -54,6 +61,7 @@ export default function InsideHove({
         {menu.map((item, i) => (
           <div
             key={i}
+            onClick={()=>handleRouting(item)}
             className="flex items-center justify-between text-lg cursor-pointer hover:text-green-500 transition"
           >
             <span>{item.name}</span>
