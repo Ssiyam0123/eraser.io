@@ -9,10 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useFileList } from "@/app/hooks/useFileList";
 
 export default function FileTable() {
-  const { fileList, setFileList } = useContext(FileListContext);
-
+const {files} = useFileList();
+const router = useRouter()
   return (
     <div className="overflow-x-auto bg-black p-4 rounded-md">
       <table className="min-w-full divide-y divide-white/20 text-white">
@@ -26,11 +28,12 @@ export default function FileTable() {
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-white/10 bg-gray-800">
-          {fileList.map((file, i) => (
+        {/* <tbody className="divide-y divide-white/10 bg-gray-800">
+          {files?.map((file, i) => (
             <tr
-              key={i}
-              className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium"
+            onClick={()=>router.push('workspace/'+file._id)}
+              key={file._id}
+              className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium cursor-pointer"
             >
               <td>{file?.createdBy}</td>
               <td>{file?.document}</td>
@@ -48,7 +51,7 @@ export default function FileTable() {
               <td></td>
             </tr>
           ))}
-        </tbody>
+        </tbody> */}
       </table>
     </div>
   );

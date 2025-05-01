@@ -14,10 +14,6 @@ import FileTable from "./_components/FileTable";
 export default function Dashboard() {
   const { user }: any = useKindeBrowserClient();
   const convex = useConvex();
-  const getUser = useQuery(
-    api.user.getUser,
-    user?.email ? { email: user?.email } : "skip"
-  );
 
   const createUser = useMutation(api.user.createUser);
 
@@ -37,11 +33,11 @@ export default function Dashboard() {
       checkUser();
     }
   }, [user]);
+
   return (
     <div>
-      {/* <Header/> */}
-      <DashboardHeader/>
-      <FileTable/>
+      <DashboardHeader />
+      <FileTable />
     </div>
   );
 }

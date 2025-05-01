@@ -1,6 +1,9 @@
+'use client'
+
+import { useGetTeamList } from "@/app/hooks/useGetTeamList";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
+import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,23 +12,22 @@ import React, { useState } from "react";
 export default function InsideHove({
   selectedTeam,
   setSelectedTeam,
-  user,
-  teamList,
-  setCurrentTeamId
+
 }) {
- 
+
+  const {user} = useKindeBrowserClient()
   // console.log(selectedTeam);
   const handleTeamSelect = (team) => {
     setSelectedTeam(team);
-    setCurrentTeamId(team._id)
-    
   };
 
-  const router = useRouter()
+  const { teamList } = useGetTeamList();
 
-  const handleRouting = (item)=>{
-router.push(`${item.path}`)
-  }
+  const router = useRouter();
+
+  const handleRouting = (item) => {
+    router.push(`${item.path}`);
+  };
 
   const menu = [
     {
@@ -57,14 +59,14 @@ router.push(`${item.path}`)
         ))}
       </div>
 
-      <Separator className="my-4" />
+      <Separator className="my-4" asChild/>
 
       {/* Menu */}
       <div className="space-y-4">
         {menu.map((item, i) => (
           <div
             key={i}
-            onClick={()=>handleRouting(item)}
+            onClick={() => handleRouting(item)}
             className="flex items-center justify-between text-lg cursor-pointer hover:text-green-500 transition"
           >
             <span>{item.name}</span>

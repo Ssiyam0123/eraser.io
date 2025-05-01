@@ -7,7 +7,7 @@ import React from 'react'
 
 export default function DashboardHeader() {
   const { user } = useKindeBrowserClient()
-  console.log(user)
+  // console.log(user)
 
   return (
     <div className="flex justify-end w-full px-4 py-2">

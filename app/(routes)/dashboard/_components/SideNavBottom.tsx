@@ -30,7 +30,7 @@ import { Progress } from "@/components/ui/progress";
 export default function SideNavBottom({
   currentTeamId,
   currentFileNum,
-  getFiles,
+  
 }) {
   const [fileName, setFileName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -68,13 +68,9 @@ export default function SideNavBottom({
   ];
 
 
-  // console.log(currentTeamId)
 
-  const convex = useConvex();
   const { user } = useKindeBrowserClient();
 
-  // console.log(currentTeamId);
-  // console.log(fileNum)
 
   const createFile = useMutation(api.files.createFile);
 
@@ -90,7 +86,6 @@ export default function SideNavBottom({
       whiteboard: "",
     }).then((res) => {
       // console.log(res);
-      // getFiles()
       if (res) {
         toast.success("File added successfully!!!");
         setIsOpen(false);

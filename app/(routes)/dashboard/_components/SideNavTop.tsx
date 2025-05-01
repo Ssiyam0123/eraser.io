@@ -1,3 +1,5 @@
+"use client";
+
 import { MoveDown, MoveUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
@@ -6,8 +8,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import InsideHove from "./InsideHove";
-import { useConvex } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { useGetTeamList } from "@/app/hooks/useGetTeamList";
+import { useFileList } from "@/app/hooks/useFileList";
 
 export interface TEAM {
   createdBy: string;
@@ -15,33 +17,28 @@ export interface TEAM {
   _id: string;
 }
 
-export default function SideNavTop({ user, setCurrentTeamId }) {
+export default function SideNavTop() {
   const [open, setOpen] = useState(false);
-  const [teamList, setTeamList] = useState<TEAM[]>();
-  const convex = useConvex();
-  const [selectedTeam, setSelectedTeam] = useState(null);
-
-  const getTeamList = async () => {
-    const result = await convex.query(api.teams.getTeam, {
-      email: user?.email,
-    });
-    setTeamList(result);
-    if (result.length > 0) setSelectedTeam(result[0]);
-  };
-
-  // console.log(selectedTeam);
-
-  useEffect(() => {
-    if (user?.email) getTeamList();
-  }, [user]);
+  const [selectedTeam, setSelectedTeam] = useState();
+  const { teamList } = useGetTeamList();
+  const [fileList, setFileList] = useState();
 
   // useEffect(() => {
-  //   if (selectedTeam?._id) {
-  //     localStorage.setItem("currentTeam", JSON.stringify(selectedTeam._id));
-  //   }
-  //   console.log(selectedTeam)
-  // }, [selectedTeam]);
+  //   teamList && setSelectedTeam(teamList[0]);
+  // }, [teamList]);
+
+
+
+
+  useEffect(() => {
+    if (teamList && teamList?.length && !selectedTeam) {
+      setSelectedTeam(teamList[0]);
+    }
+  }, [teamList, selectedTeam]);
   
+
+
+  const { files } = useFileList(selectedTeam?._id);
 
   return (
     <div>
@@ -56,13 +53,10 @@ export default function SideNavTop({ user, setCurrentTeamId }) {
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          <InsideHove
+          {/* <InsideHove
             selectedTeam={selectedTeam}
             setSelectedTeam={setSelectedTeam}
-            teamList={teamList}
-            user={user}
-            setCurrentTeamId={setCurrentTeamId}
-          />
+          /> */}
         </PopoverContent>
       </Popover>
     </div>
