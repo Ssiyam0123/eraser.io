@@ -1,28 +1,35 @@
-'use client'
+"use client";
 
-import React from 'react'
-import WorkspaceHeader from '../_components/WorkspaceHeader'
-import EditorComponent from '../_components/EditorComponent'
-import Editor from '../_components/Editor'
-import { useParams } from 'next/navigation'
+import React from "react";
+import WorkspaceHeader from "../_components/WorkspaceHeader";
+import EditorComponent from "../_components/EditorComponent";
+import { useParams } from "next/navigation";
 
-export default function page() {
-const param = useParams();
-console.log(param)
+export default function Page() {
+  const {filedId} = useParams();
+  
+  console.log(filedId);
 
   return (
     <div>
-      <WorkspaceHeader/>
-      <div className='flex w-[95%] mx-auto'>
-        <div className='w-[45%] mx-auto h-screen mt-20'>
-           add here a edior
-           <EditorComponent/>
+      <WorkspaceHeader />
+      <div className="flex flex-col lg:flex-row flex-wrap justify-center w-full px-4 gap-6 mt-20">
+        {/* Editor Panel */}
+        <div className="w-full lg:w-[45%] min-h-[70vh]">
+          <h2 className="text-white mb-2 text-lg font-semibold">Editor</h2>
+          <EditorComponent fileId={filedId} />
         </div>
-        <div className='w-[45%] h-screen mt-20'>
-          add here e whiteboard
-          {/* <Editor/> */}
+
+        {/* Whiteboard Panel */}
+        <div className="w-full lg:w-[45%] min-h-[70vh]">
+          <h2 className="text-white mb-2 text-lg font-semibold">Whiteboard</h2>
+          {/* Uncomment your whiteboard when needed */}
+          {/* <Editor /> */}
+          <div className="bg-white rounded-lg h-full shadow-md p-4">
+            Whiteboard placeholder
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

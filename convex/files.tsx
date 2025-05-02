@@ -28,3 +28,15 @@ export const getFile = query({
     return result;
   },
 });
+
+export const updateFile = mutation({
+  args: {
+    _id: v.id("files"), // Use v.id for referencing document IDs in a table
+    document: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args._id, {
+      document: args.document,
+    });
+  },
+});

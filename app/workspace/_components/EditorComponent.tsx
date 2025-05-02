@@ -17,11 +17,17 @@ import Embed from "@editorjs/embed";
 // History plugin
 import Undo from "editorjs-undo";
 import { Button } from "@/components/ui/button";
+import { useConvex, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
-export default function EditorComponent() {
+export default function EditorComponent(filedId) {
+    console.log(filedId)
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const editorHolder = useRef<HTMLDivElement>(null);
+
+  const updateDocument = useMutation(api.files.updateFile);
 
   useEffect(() => {
     if (!editorRef.current && editorHolder.current) {
@@ -82,10 +88,13 @@ export default function EditorComponent() {
   }, []);
 
   const handleSave = async () => {
-    if (editorRef.current) {
+    if (filedId && editorRef.current) {
       try {
         const content = await editorRef.current.save();
-        console.log("✅ Saved content:", content);
+        // console.log("✅ Saved content:", content);
+        console.log("✅ Stringyfy content:", JSON.stringify(content));
+        updateDocument({ _id: filedId?.fileId, document: JSON.stringify(content) });
+        toast.success("file updated successfully");
         // You can now send this to your backend
       } catch (err) {
         console.error("❌ Saving failed", err);
@@ -96,14 +105,14 @@ export default function EditorComponent() {
   return (
     <div className="w-full border border-gray-700 rounded p-4 bg-gray-900 text-white space-y-4">
       <div id="editorjs" className="mr-5" ref={editorHolder} />
-      {!isEditorReady && (
+      {isEditorReady && (
         <p className="text-sm text-gray-400">Loading editor...</p>
       )}
 
       <Button
         className="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
         onClick={handleSave}
-        disabled={!isEditorReady}
+        disabled={isEditorReady}
       >
         Save Content
       </Button>
