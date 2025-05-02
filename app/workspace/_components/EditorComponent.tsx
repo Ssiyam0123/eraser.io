@@ -17,22 +17,36 @@ import Embed from "@editorjs/embed";
 // History plugin
 import Undo from "editorjs-undo";
 import { Button } from "@/components/ui/button";
-import { useConvex, useMutation } from "convex/react";
+import { useConvex, useMutation, useQueries } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 
-export default function EditorComponent(filedId) {
-    console.log(filedId)
+export default function EditorComponent({ filedId }: { filedId: string }) {
+  console.log(filedId);
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const editorHolder = useRef<HTMLDivElement>(null);
-
+  const convex = useConvex();
+  const [fileData, setFileData] = useState();
   const updateDocument = useMutation(api.files.updateFile);
+
+  //   const getFile = useMutation(api.files.getFilebyId);
+
+  const fetchFile = async () => {
+    const result = await convex.query(api.files.getFilebyId, {filedId});
+    setFileData(result);
+  };
+
+//   useEffect(() => {
+//     fetchFile();
+//   }, [fileData]);
 
   useEffect(() => {
     if (!editorRef.current && editorHolder.current) {
       const editor = new EditorJS({
         holder: editorHolder.current,
+        data: fileData?.document ? JSON.parse(fileData.document) : { blocks: [] },
+
         placeholder: "Start creating professional content...",
         tools: {
           header: Header,
@@ -93,7 +107,10 @@ export default function EditorComponent(filedId) {
         const content = await editorRef.current.save();
         // console.log("✅ Saved content:", content);
         console.log("✅ Stringyfy content:", JSON.stringify(content));
-        updateDocument({ _id: filedId?.fileId, document: JSON.stringify(content) });
+        updateDocument({
+          _id: filedId,
+          document: JSON.stringify(content),
+        });
         toast.success("file updated successfully");
         // You can now send this to your backend
       } catch (err) {
@@ -110,7 +127,7 @@ export default function EditorComponent(filedId) {
       )}
 
       <Button
-        className="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
+        className="cursor-pointer  bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
         onClick={handleSave}
         disabled={isEditorReady}
       >

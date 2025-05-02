@@ -23,7 +23,8 @@ export const getFile = query({
   handler: async (ctx, args) => {
     const result = await ctx.db
       .query("files")
-      .filter((q) => q.eq(q.field("teamId"), args.teamId)).collect()
+      .filter((q) => q.eq(q.field("teamId"), args.teamId))
+      .collect();
 
     return result;
   },
@@ -38,5 +39,15 @@ export const updateFile = mutation({
     return await ctx.db.patch(args._id, {
       document: args.document,
     });
+  },
+});
+
+export const getFilebyId = query({
+  args: {
+    _id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.get(args._id);
+    return result;
   },
 });

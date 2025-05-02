@@ -20,7 +20,7 @@ export default function FileTable() {
   // console.log(getFiles)
   // const { teamList } = useGetTeamList();
   const {data} = useTeamFiles(getFiles)
-  const convex = useConvex();
+  // const convex = useConvex();
   const router = useRouter();
 
   // useEffect(() => {
@@ -56,19 +56,20 @@ export default function FileTable() {
         <tbody className="divide-y divide-white/10 bg-gray-800">
           {getFiles &&  data?.map((file) => (
             <tr
-              key={file._id}
+              key={file?._id}
+              onClick={()=>router.push("workspace/"+file?._id)}
               className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium"
             >
-              <td onClick={() => router.push("workspace/" + file._id)} className="cursor-pointer">
+              <td className="cursor-pointer">
                 {file.createdBy}
               </td>
-              <td onClick={() => router.push("workspace/" + file._id)} className="cursor-pointer">
+              <td className="cursor-pointer">
                 {file.document}
               </td>
-              <td onClick={() => router.push("workspace/" + file._id)} className="cursor-pointer">
+              <td className="cursor-pointer">
                 {file.fileName}
               </td>
-              <td onClick={() => router.push("workspace/" + file._id)} className="cursor-pointer">
+              <td className="cursor-pointer">
                 {new Date(file._creationTime).toLocaleString()}
               </td>
               <td>

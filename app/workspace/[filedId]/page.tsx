@@ -17,7 +17,7 @@ export default function Page() {
         {/* Editor Panel */}
         <div className="w-full lg:w-[45%] min-h-[70vh]">
           <h2 className="text-white mb-2 text-lg font-semibold">Editor</h2>
-          <EditorComponent fileId={filedId} />
+          <EditorComponent filedId={filedId} />
         </div>
 
         {/* Whiteboard Panel */}
