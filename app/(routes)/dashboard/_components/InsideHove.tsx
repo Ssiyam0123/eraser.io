@@ -1,5 +1,7 @@
 'use client'
 
+import { FileListContext } from "@/app/_context/FilesListContext";
+import { useFileList } from "@/app/hooks/useFileList";
 import { useGetTeamList } from "@/app/hooks/useGetTeamList";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -7,7 +9,7 @@ import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 export default function InsideHove({
   selectedTeam,
@@ -15,10 +17,17 @@ export default function InsideHove({
 
 }) {
 
+
+  const {setCurrentTeam2} = useFileList()
+  const {setGetFiles} = useContext(FileListContext)
+
   const {user} = useKindeBrowserClient()
   // console.log(selectedTeam);
   const handleTeamSelect = (team) => {
     setSelectedTeam(team);
+    setCurrentTeam2(team?._id)
+    // setGetFiles(team?._id)
+    // console.log(team)
   };
 
   const { teamList } = useGetTeamList();

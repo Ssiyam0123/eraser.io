@@ -1,7 +1,7 @@
 "use client";
 
 import { MoveDown, MoveUp } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -10,6 +10,7 @@ import {
 import InsideHove from "./InsideHove";
 import { useGetTeamList } from "@/app/hooks/useGetTeamList";
 import { useFileList } from "@/app/hooks/useFileList";
+import { FileListContext } from "@/app/_context/FilesListContext";
 
 export interface TEAM {
   createdBy: string;
@@ -23,22 +24,15 @@ export default function SideNavTop() {
   const { teamList } = useGetTeamList();
   const [fileList, setFileList] = useState();
 
-  // useEffect(() => {
-  //   teamList && setSelectedTeam(teamList[0]);
-  // }, [teamList]);
-
-
-
-
+const {setGetFiles} = useContext(FileListContext)
+  
   useEffect(() => {
     if (teamList && teamList?.length && !selectedTeam) {
       setSelectedTeam(teamList[0]);
+      // setGetFiles(teamList[0])
+
     }
   }, [teamList, selectedTeam]);
-  
-
-
-  const { files } = useFileList(selectedTeam?._id);
 
   return (
     <div>
@@ -53,10 +47,10 @@ export default function SideNavTop() {
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          {/* <InsideHove
+          <InsideHove
             selectedTeam={selectedTeam}
             setSelectedTeam={setSelectedTeam}
-          /> */}
+          />
         </PopoverContent>
       </Popover>
     </div>

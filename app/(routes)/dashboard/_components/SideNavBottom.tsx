@@ -26,6 +26,7 @@ import { json } from "stream/consumers";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
+import { useFileList } from "@/app/hooks/useFileList";
 
 export default function SideNavBottom({
   currentTeamId,
@@ -68,6 +69,9 @@ export default function SideNavBottom({
   ];
 
 
+  const {files} = useFileList()
+
+
 
   const { user } = useKindeBrowserClient();
 
@@ -80,7 +84,7 @@ export default function SideNavBottom({
     createFile({
       fileName,
       teamId: currentTeamId,
-      createdBy: user.email,
+      createdBy: user?.email,
       archive: false,
       document: "",
       whiteboard: "",
@@ -139,12 +143,12 @@ export default function SideNavBottom({
       <div className="mt-10 space-y-3">
         <div>
           <div>
-            <Progress value={currentFileNum * 20} />
+            <Progress value={files?.length * 20} />
           </div>
         </div>
         <div>
           <p>
-            <strong>{currentFileNum}</strong> out of <strong>5</strong> files
+            <strong>{files?.length}</strong> out of <strong>5</strong> files
             used
           </p>
           <p>upgrade your plan for unlimited access</p>

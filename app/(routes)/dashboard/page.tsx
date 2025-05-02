@@ -10,6 +10,7 @@ import { useConvex, useMutation, useQuery } from "convex/react";
 import React, { useEffect } from "react";
 import DashboardHeader from "./_components/DashboardHeader";
 import FileTable from "./_components/FileTable";
+import { useFileList } from "@/app/hooks/useFileList";
 
 export default function Dashboard() {
   const { user }: any = useKindeBrowserClient();
@@ -27,6 +28,7 @@ export default function Dashboard() {
       }).then((resp) => console.log(resp));
     }
   };
+  const {files} = useFileList()
 
   useEffect(() => {
     if (user) {
@@ -37,7 +39,9 @@ export default function Dashboard() {
   return (
     <div>
       <DashboardHeader />
-      <FileTable />
+      
+         <FileTable/>
+      
     </div>
   );
 }

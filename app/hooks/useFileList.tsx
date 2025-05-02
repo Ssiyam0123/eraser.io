@@ -4,13 +4,10 @@ import { useConvex } from "convex/react";
 import { useGetTeamList } from "./useGetTeamList";
 
 export const useFileList = (teamId) => {
-  const [currentTeam, setCurrentTeam] = useState();
+  const [currentTeam, setCurrentTeam2] = useState();
 
-  // const {} = useGetTeamList()
 
-  teamId && setCurrentTeam(teamId);
-
-  console.log("team id forom usefile hook :" + teamId);
+  console.log("team id from usefile hook :" + currentTeam);
   const convex = useConvex();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,10 +22,11 @@ export const useFileList = (teamId) => {
       setLoading(false);
     };
 
-    if (teamId) {
+    console.log("from file hook : ++ :"+files.length)
+    if (currentTeam) {
       fetchFiles();
     }
-  }, [teamId, convex]);
+  }, [convex, currentTeam]);
 
-  return { files, loading };
+  return { files, setCurrentTeam2 };
 };

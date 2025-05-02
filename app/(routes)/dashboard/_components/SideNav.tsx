@@ -8,23 +8,16 @@ import { api } from "@/convex/_generated/api";
 import { useFileList } from "@/app/hooks/useFileList";
 
 export default function SideNav() {
-
-
-
-
   return (
-    <aside className=" w-full shadow-md flex flex-col justify-between p-4">
+    <aside className=" w-full shadow-md flex flex-col justify-between p-4 h-screen">
       <div>
-        <SideNavTop  />
+        <SideNavTop />
       </div>
       <div className="flex-1 mt-6">
         <SideNavMiddle />
       </div>
       <div className="mt-6">
-        {/* <SideNavBottom
-          currentTeamId={currentTeamId}
-          currentFileNum={currentFileNum}
-        /> */}
+        <SideNavBottom />
       </div>
     </aside>
   );
