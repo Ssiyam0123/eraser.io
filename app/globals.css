@@ -1,27 +1,86 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+#editorjs-container {
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+h1.ce-header{
+  @apply text-3xl font-bold;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+h2.ce-header{
+  @apply text-2xl font-semibold;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+h3.ce-header{
+  @apply text-xl font-semibold;
 }
+
+h4.ce-header{
+  @apply text-lg font-semibold;
+}
+
+h5.ce-header{
+  @apply text-base font-semibold;
+}
+
+h6.ce-header{
+  @apply text-base font-semibold;
+}
+
+/* Make the + icon white */
+.ce-toolbar__plus {
+  color: white !important;
+  background-color: transparent !important;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect: white background, black icon */
+.ce-toolbar__plus:hover {
+  background-color: white !important;
+  color: black !important;
+}
+
+
+/* Style for the "+" icon */
+.ce-toolbar__plus {
+  color: white !important;
+  background-color: transparent !important;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.ce-toolbar__plus:hover {
+  background-color: white !important;
+  color: black !important;
+}
+
+/* Style for the three-dot settings button */
+.ce-toolbar__settings-btn {
+  color: white !important;
+  background-color: transparent !important;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.ce-toolbar__settings-btn:hover {
+  background-color: white !important;
+  color: black !important;
+}
+
+
