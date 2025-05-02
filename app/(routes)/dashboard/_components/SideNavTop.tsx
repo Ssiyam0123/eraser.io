@@ -7,10 +7,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import InsideHove from "./InsideHove";
-import { useGetTeamList } from "@/app/hooks/useGetTeamList";
-import { useFileList } from "@/app/hooks/useFileList";
+import { useUserTeams } from "@/app/hooks/useUserTeams";
 import { FileListContext } from "@/app/_context/FilesListContext";
+import InsideHove from "./InsideHove";
 
 export interface TEAM {
   createdBy: string;
@@ -20,24 +19,49 @@ export interface TEAM {
 
 export default function SideNavTop() {
   const [open, setOpen] = useState(false);
-  const [selectedTeam, setSelectedTeam] = useState();
-  const { teamList } = useGetTeamList();
-  const [fileList, setFileList] = useState();
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const { getFiles, setGetFiles } = useContext(FileListContext);
+  const { data: teams = [] } = useUserTeams();
 
-const {setGetFiles} = useContext(FileListContext)
-  
+  // Set default team on load
   useEffect(() => {
-    if (teamList && teamList?.length && !selectedTeam) {
-      setSelectedTeam(teamList[0]);
-      // setGetFiles(teamList[0])
-
+    if (teams.length > 0 && !selectedTeamId) {
+      setSelectedTeamId(teams[0]._id);
     }
-  }, [teamList, selectedTeam]);
+  }, [teams]);
+
+  console.log(getFiles);
+  // Refetch files whenever selected team changes
+  useEffect(() => {
+    if (selectedTeamId) {
+      setGetFiles(selectedTeamId);
+    }
+  }, [selectedTeamId]);
+
+  const selectedTeam = teams.find((team) => team._id === selectedTeamId);
 
   return (
-    <div>
+    <div className="p-4">
+      {/* Dropdown Select */}
+      <select
+        className="w-full p-2 bg-gray-800 text-white rounded"
+        value={selectedTeamId || ""}
+        onChange={(e) => setSelectedTeamId(e.target.value)}
+      >
+        {teams.map((team) => (
+          <option key={team._id} value={team._id}>
+            {team.teamName}
+          </option>
+        ))}
+      </select>
+
+      {/* Optional: show current team name visually */}
+      <div className="mt-2 text-white">
+        Selected Team: <strong>{selectedTeam?.teamName || "None"}</strong>
+      </div>
+
       <Popover>
-        <PopoverTrigger className="w-full">
+        <PopoverTrigger className="w-full" value={selectedTeamId || ""}>
           <div
             onClick={() => setOpen(!open)}
             className="flex items-center justify-center cursor-pointer bg-gray-800 p-5 text-center gap-2"
@@ -48,8 +72,8 @@ const {setGetFiles} = useContext(FileListContext)
         </PopoverTrigger>
         <PopoverContent>
           <InsideHove
-            selectedTeam={selectedTeam}
-            setSelectedTeam={setSelectedTeam}
+            selectedTeamId={selectedTeamId}
+            setSelectedTeamId={setSelectedTeamId}
           />
         </PopoverContent>
       </Popover>

@@ -7,7 +7,7 @@ export const useFileList = (teamId) => {
   const [currentTeam, setCurrentTeam2] = useState();
 
 
-  console.log("team id from usefile hook :" + currentTeam);
+  // console.log("team id from usefile hook :" + currentTeam);
   const convex = useConvex();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export const useFileList = (teamId) => {
       setLoading(false);
     };
 
-    console.log("from file hook : ++ :"+files.length)
+    // console.log("from file hook : ++ :"+files.length)
     if (currentTeam) {
       fetchFiles();
     }

@@ -13,26 +13,11 @@ export default function DashbordLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const convex = useConvex();
-  const { user } = useKindeBrowserClient();
-  const router = useRouter();
+
   const [getFiles, setGetFiles] = useState();
 
-  console.log(getFiles);
+  // console.log(getFiles);
 
-  // useEffect(() => {
-  //   const checkTeam = async () => {
-  //     const result = await convex.query(api.teams.getTeam, {
-  //       email: user?.email,
-  //     });
-
-  //     if (!result?.length) {
-  //       router.push("/teams/create");
-  //     }
-  //   };
-
-  //   checkTeam();
-  // }, [user, convex]);
 
   return (
     <FileListContext.Provider value={{getFiles, setGetFiles}}>

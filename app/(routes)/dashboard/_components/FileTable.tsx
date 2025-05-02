@@ -13,25 +13,28 @@ import { FileListContext } from "@/app/_context/FilesListContext";
 import { useGetTeamList } from "@/app/hooks/useGetTeamList";
 import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useTeamFiles } from "@/app/hooks/useTeamFiles";
 
 export default function FileTable() {
   const { getFiles, setGetFiles } = useContext(FileListContext);
-  const { teamList } = useGetTeamList();
+  // console.log(getFiles)
+  // const { teamList } = useGetTeamList();
+  const {data} = useTeamFiles(getFiles)
   const convex = useConvex();
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchFiles = async () => {
-      if (teamList && teamList.length > 0) {
-        const result = await convex.query(api.files.getFile, {
-          teamId: teamList[0]._id,
-        });
-        setGetFiles(result);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchFiles = async () => {
+  //     if (teamList && teamList.length > 0) {
+  //       const result = await convex.query(api.files.getFile, {
+  //         teamId: teamList[0]._id,
+  //       });
+  //       setGetFiles(result);
+  //     }
+  //   };
 
-    fetchFiles();
-  }, [teamList, convex, setGetFiles]);
+  //   fetchFiles();
+  // }, [teamList, convex, setGetFiles]);
 
   if (!getFiles || getFiles.length === 0) {
     return <div className="text-white p-4">No files found.</div>;
@@ -51,7 +54,7 @@ export default function FileTable() {
         </thead>
 
         <tbody className="divide-y divide-white/10 bg-gray-800">
-          {getFiles.map((file) => (
+          {getFiles &&  data?.map((file) => (
             <tr
               key={file._id}
               className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium"

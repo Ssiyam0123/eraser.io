@@ -1,36 +1,34 @@
-'use client'
+"use client";
 
 import { FileListContext } from "@/app/_context/FilesListContext";
 import { useFileList } from "@/app/hooks/useFileList";
 import { useGetTeamList } from "@/app/hooks/useGetTeamList";
+import { useTeamFiles } from "@/app/hooks/useTeamFiles";
+import { useUserTeams } from "@/app/hooks/useUserTeams";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import {
+  LogoutLink,
+  useKindeBrowserClient,
+} from "@kinde-oss/kinde-auth-nextjs";
 import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 
-export default function InsideHove({
-  selectedTeam,
-  setSelectedTeam,
+export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
+  const { user } = useKindeBrowserClient();
+  const { getFiles, setGetFiles } = useContext(FileListContext);
+  const { data: teamList } = useUserTeams();
 
-}) {
-
-
-  const {setCurrentTeam2} = useFileList()
-  const {setGetFiles} = useContext(FileListContext)
-
-  const {user} = useKindeBrowserClient()
-  // console.log(selectedTeam);
   const handleTeamSelect = (team) => {
-    setSelectedTeam(team);
-    setCurrentTeam2(team?._id)
-    // setGetFiles(team?._id)
-    // console.log(team)
+    setSelectedTeamId(team?._id);
+    // refetch()
   };
 
-  const { teamList } = useGetTeamList();
+  // const { teamList } = useGetTeamList();
+
+  // console.log("from inside hove : ",teamList)
 
   const router = useRouter();
 
@@ -60,7 +58,7 @@ export default function InsideHove({
             key={team._id}
             onClick={() => handleTeamSelect(team)}
             className={`cursor-pointer p-3 rounded-2xl font-medium transition ${
-              selectedTeam._id === team._id && "bg-blue-900 text-gray-100"
+              selectedTeamId === team._id && "bg-blue-900 text-gray-100"
             }`}
           >
             {team.teamName}
@@ -68,7 +66,7 @@ export default function InsideHove({
         ))}
       </div>
 
-      <Separator className="my-4" asChild/>
+      <Separator className="my-4" asChild />
 
       {/* Menu */}
       <div className="space-y-4">

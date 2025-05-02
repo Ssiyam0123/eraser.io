@@ -14,7 +14,7 @@ export default function CreateTeam() {
 
   const createTeam = useMutation(api.teams.createTeam);
   const { user } = useKindeBrowserClient();
-    console.log(user)
+    // console.log(user)
   const router = useRouter();
 
   const handleSubmit = () => {
