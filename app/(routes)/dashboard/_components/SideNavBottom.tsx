@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useConvex, useMutation } from "convex/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { api } from "@/convex/_generated/api";
 import { json } from "stream/consumers";
@@ -27,10 +27,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 import { useFileList } from "@/app/hooks/useFileList";
+import { FileListContext } from "@/app/_context/FilesListContext";
+import { useTeamFiles } from "@/app/hooks/useTeamFiles";
 
 export default function SideNavBottom({
-  currentTeamId,
-  currentFileNum,
+
   
 }) {
   const [fileName, setFileName] = useState("");
@@ -69,7 +70,9 @@ export default function SideNavBottom({
   ];
 
 
-  const {files} = useFileList()
+  const { getFiles, setGetFiles } = useContext(FileListContext);
+
+  const {data: files , refetch} = useTeamFiles(getFiles);
 
 
 
@@ -79,11 +82,11 @@ export default function SideNavBottom({
   const createFile = useMutation(api.files.createFile);
 
   const handleCreateFile = () => {
-    if (!fileName || !currentTeamId || !user?.email) return;
+    if (!fileName || !getFiles || !user?.email) return;
 
     createFile({
       fileName,
-      teamId: currentTeamId,
+      teamId: getFiles,
       createdBy: user?.email,
       archive: false,
       document: "",
@@ -94,6 +97,7 @@ export default function SideNavBottom({
         toast.success("File added successfully!!!");
         setIsOpen(false);
         setFileName("");
+        refetch()
       } else {
         toast("there were somthing wrong while adding the file!");
       }
@@ -113,7 +117,7 @@ export default function SideNavBottom({
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button disabled={currentFileNum==5} className="bg-blue-700 rounded-2xl flex justify-between p-4 cursor-pointer">
+          <Button disabled={files?.length==5} className="bg-blue-700 rounded-2xl flex justify-between p-4 cursor-pointer">
             <p>New File </p>
             <p>
               <MoveDownIcon />

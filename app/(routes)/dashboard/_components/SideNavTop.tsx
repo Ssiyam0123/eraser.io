@@ -40,26 +40,10 @@ export default function SideNavTop() {
 
   const selectedTeam = teams.find((team) => team._id === selectedTeamId);
 
+  
+
   return (
     <div className="p-4">
-      {/* Dropdown Select */}
-      <select
-        className="w-full p-2 bg-gray-800 text-white rounded"
-        value={selectedTeamId || ""}
-        onChange={(e) => setSelectedTeamId(e.target.value)}
-      >
-        {teams.map((team) => (
-          <option key={team._id} value={team._id}>
-            {team.teamName}
-          </option>
-        ))}
-      </select>
-
-      {/* Optional: show current team name visually */}
-      <div className="mt-2 text-white">
-        Selected Team: <strong>{selectedTeam?.teamName || "None"}</strong>
-      </div>
-
       <Popover>
         <PopoverTrigger className="w-full" value={selectedTeamId || ""}>
           <div
