@@ -44,12 +44,16 @@ export const updateFile = mutation({
   },
 });
 
-export const getFilebyId = query({
+
+export const getFileById = query({
   args: {
-    _id: v.string(),
+    _id: v.id("files"), // Use v.id() with the correct table name
   },
   handler: async (ctx, args) => {
-    const result = await ctx.db.get(args._id);
-    return result;
+    const file = await ctx.db.get(args._id);
+    if (!file) {
+      throw new Error("File not found");
+    }
+    return file;
   },
 });

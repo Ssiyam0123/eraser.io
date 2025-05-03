@@ -20,8 +20,8 @@ export default function CreateTeam() {
   const handleSubmit = () => {
     createTeam({
       teamName: teamName,
-      createdBy: user?.given_name,
-      email:user?.email
+      createdBy: user?.given_name || "",
+      email:user?.email || ""
     }).then((resp) => {
       console.log(resp);
       toast("team create successfully");

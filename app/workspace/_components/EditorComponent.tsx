@@ -21,9 +21,10 @@ import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import Loader from "@/app/(routes)/dashboard/_components/Loader";
-import { time } from "console";
 
-export default function EditorComponent({ filedId }: { filedId: string }) {
+
+export default function EditorComponent({ filedId }: { filedId: any }) {
+  console.log(filedId)
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [fileData, setFileData] = useState<any>(null);
@@ -32,19 +33,47 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
   const updateDocument = useMutation(api.files.updateFile);
   const [loading, setLoading] = useState(false);
 
-  const fetchFile = async () => {
-    try {
-      setLoading(true);
-      const result = await convex.query(api.files.getFilebyId, {
-        _id: filedId,
-      });
-      setFileData(result);
-      setLoading(false);
-      console.log("📄 File data fetched:", result);
-    } catch (error) {
-      console.error("❌ Failed to fetch file:", error);
+  // const fetchFile = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const result = await convex.query(api.files.getFilebyId, {
+  //       _id: filedId
+  //     });
+  //     setFileData(result);
+  //     setLoading(false);
+  //     console.log("📄 File data fetched:", result);
+  //   } catch (error) {
+  //     console.error("❌ Failed to fetch file:", error);
+  //   }
+  // };
+
+
+
+
+
+  // Your component
+const fetchFile = async () => {
+  try {
+    setLoading(true);
+    const result = await convex.query(api.files.getFileById, { // Note: getFileById (correct casing)
+      _id: filedId // Note: fileId (correct spelling)
+    });
+    
+    if (!result) {
+      throw new Error("File not found");
     }
-  };
+    
+    setFileData(result);
+    console.log("📄 File data fetched:", result);
+  } catch (error) {
+    console.error("❌ Failed to fetch file:", error);
+    toast.error("Failed to load file");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   useEffect(() => {
     fetchFile();

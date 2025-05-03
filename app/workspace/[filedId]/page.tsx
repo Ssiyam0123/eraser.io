@@ -10,7 +10,7 @@ import Whiteboard from "../_components/Whiteboard";
 export default function Page() {
   const {filedId} = useParams();
   
-  // console.log(filedId);
+  console.log(filedId);
 
   return (
     <div>

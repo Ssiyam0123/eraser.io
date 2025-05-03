@@ -1,7 +1,12 @@
 import { api } from "@/convex/_generated/api";
 import { useConvex, useQuery } from "convex/react"
 
-export const useFileUpdate = (forFileId, document) =>{
+interface UpdateFile {
+    forFileId : any;
+    document : any;
+}
+
+export const useFileUpdate = ({forFileId, document}:UpdateFile) =>{
     const convex = useConvex();
     return useQuery({
         queryKey: [forFileId],

@@ -21,7 +21,7 @@ export default function Dashboard() {
 
   const { getFiles } = useContext(FileListContext);
 
-  const { data, isLoading } = useTeamFiles(getFiles);
+  const { data = [], isLoading } = useTeamFiles(getFiles);
   const createUser = useMutation(api.user.createUser);
 
   const checkUser = async () => {

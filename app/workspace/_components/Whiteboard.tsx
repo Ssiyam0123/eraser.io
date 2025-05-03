@@ -8,11 +8,11 @@ import { useState } from "react";
 
 export default function Whiteboard() {
     const [whiteOut, setwhitleOut] = useState()
-    console.log(whiteOut)
+    // console.log(whiteOut)
   return (
     <div style={{ height: "" }} className="h-[70vh]">
       <Excalidraw 
-      onChange={(api)=>setwhitleOut(api)}
+      onChange={(api : any)=>setwhitleOut(api)}
       theme="dark"/>
     </div>
   );

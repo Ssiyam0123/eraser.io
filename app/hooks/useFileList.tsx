@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useConvex } from "convex/react";
-import { useGetTeamList } from "./useGetTeamList";
 
-export const useFileList = (teamId) => {
+
+export const useFileList = (teamId: any) => {
   const [currentTeam, setCurrentTeam2] = useState();
 
 
@@ -15,8 +15,8 @@ export const useFileList = (teamId) => {
   useEffect(() => {
     const fetchFiles = async () => {
       setLoading(true);
-      const result = await convex.query(api.files.getFile, {
-        teamId: currentTeam,
+      const result : any = await convex.query(api.files.getFile, {
+        teamId: currentTeam || "",
       });
       setFiles(result);
       setLoading(false);

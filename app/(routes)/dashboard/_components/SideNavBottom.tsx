@@ -66,7 +66,7 @@ export default function SideNavBottom({}) {
     },
   ];
 
-  const { getFiles, setGetFiles } = useContext(FileListContext);
+  const { getFiles } = useContext(FileListContext);
 
   const { data: files, refetch } = useTeamFiles(getFiles);
 
@@ -97,7 +97,6 @@ export default function SideNavBottom({}) {
       }
     });
 
-    // clear input after creation
   };
 
   return (
@@ -144,10 +143,10 @@ export default function SideNavBottom({}) {
       <div className="mt-10 space-y-3">
         <div>
           <div>
-            <Progress value={files?.length * 20} />
+          <Progress value={files?.length ? files.length * 20 : 0} />
           </div>
         </div>
-        <div>
+        <div className="text-sm">
           <p>
             <strong>{files?.length}</strong> out of <strong>5</strong> files
             used
