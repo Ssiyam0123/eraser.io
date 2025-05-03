@@ -21,6 +21,7 @@ import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import Loader from "@/app/(routes)/dashboard/_components/Loader";
+import { time } from "console";
 
 export default function EditorComponent({ filedId }: { filedId: string }) {
   const editorRef = useRef<EditorJS | null>(null);
@@ -29,15 +30,16 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
   const editorHolder = useRef<HTMLDivElement>(null);
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const fetchFile = async () => {
     try {
-        setLoading(true)
-      const result = await convex.query(api.files.getFilebyId, { _id:filedId
-       });
+      setLoading(true);
+      const result = await convex.query(api.files.getFilebyId, {
+        _id: filedId,
+      });
       setFileData(result);
-      setLoading(false)
+      setLoading(false);
       console.log("📄 File data fetched:", result);
     } catch (error) {
       console.error("❌ Failed to fetch file:", error);
@@ -125,7 +127,12 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
     try {
       const content = await editorRef.current.save();
       const document = JSON.stringify(content);
-      await updateDocument({ _id: filedId, document });
+      const editedAt = Date.now() + (performance.now() % 1);
+      await updateDocument({
+        _id: filedId,
+        document: document,
+        edited: editedAt,
+      });
 
       toast.success("✅ File updated successfully!");
     } catch (error) {
@@ -133,13 +140,15 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
     }
   };
 
-  if(loading) return <Loader/>
+  if (loading) return <Loader />;
 
   return (
     <div className="w-full border border-gray-700 rounded p-4 bg-gray-900 text-white space-y-4">
       <div id="editorjs" className="mr-5" ref={editorHolder} />
 
-      {isEditorReady && <p className="text-sm text-gray-400">Loading editor...</p>}
+      {isEditorReady && (
+        <p className="text-sm text-gray-400">Loading editor...</p>
+      )}
 
       <Button
         className="cursor-pointer bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"

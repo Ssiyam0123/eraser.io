@@ -9,6 +9,7 @@ export const createFile = mutation({
     archive: v.boolean(),
     document: v.string(),
     whiteboard: v.string(),
+    edited : v.string()
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.insert("files", args);
@@ -32,12 +33,13 @@ export const getFile = query({
 
 export const updateFile = mutation({
   args: {
-    _id: v.id("files"), // Use v.id for referencing document IDs in a table
+    _id: v.id("files"), 
     document: v.string(),
+    edited: v.number()
   },
   handler: async (ctx, args) => {
     return await ctx.db.patch(args._id, {
-      document: args.document,
+      document: args.document, edited: args.edited
     });
   },
 });

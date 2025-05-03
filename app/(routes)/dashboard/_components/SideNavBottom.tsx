@@ -30,10 +30,7 @@ import { useFileList } from "@/app/hooks/useFileList";
 import { FileListContext } from "@/app/_context/FilesListContext";
 import { useTeamFiles } from "@/app/hooks/useTeamFiles";
 
-export default function SideNavBottom({
-
-  
-}) {
+export default function SideNavBottom({}) {
   const [fileName, setFileName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const menu = [
@@ -69,15 +66,11 @@ export default function SideNavBottom({
     },
   ];
 
-
   const { getFiles, setGetFiles } = useContext(FileListContext);
 
-  const {data: files , refetch} = useTeamFiles(getFiles);
-
-
+  const { data: files, refetch } = useTeamFiles(getFiles);
 
   const { user } = useKindeBrowserClient();
-
 
   const createFile = useMutation(api.files.createFile);
 
@@ -91,13 +84,14 @@ export default function SideNavBottom({
       archive: false,
       document: "",
       whiteboard: "",
+      edited:""
     }).then((res) => {
       // console.log(res);
       if (res) {
         toast.success("File added successfully!!!");
         setIsOpen(false);
         setFileName("");
-        refetch()
+        refetch();
       } else {
         toast("there were somthing wrong while adding the file!");
       }
@@ -117,7 +111,10 @@ export default function SideNavBottom({
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button disabled={files?.length==5} className="bg-blue-700 rounded-2xl flex justify-between p-4 cursor-pointer">
+          <Button
+            disabled={files?.length == 5}
+            className="bg-blue-700 rounded-2xl flex justify-between p-4 cursor-pointer"
+          >
             <p>New File </p>
             <p>
               <MoveDownIcon />
