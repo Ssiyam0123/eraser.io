@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build-and-deploy": "npm run build && npx convex deploy"
+    "deploy": "npx convex deploy",
+    "build-and-deploy": "npm run build && npm run deploy",
+    "postbuild": "npx convex deploy"
   },
   "dependencies": {
     "@editorjs/checklist": "^1.6.0",
