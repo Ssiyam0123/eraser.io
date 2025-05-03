@@ -1,17 +1,28 @@
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useConvex, useQuery } from "convex/react"
+import { Id } from "@/convex/_generated/dataModel";
 
-interface UpdateFile {
-    forFileId : any;
-    document : any;
+interface UpdateFileParams {
+  fileId: Id<"files">;
+  document: string;
 }
 
-export const useFileUpdate = ({forFileId, document}:UpdateFile) =>{
-    const convex = useConvex();
-    return useQuery({
-        queryKey: [forFileId],
-        queryFn: async () => {
-            return convex.query(api.files.updateFile, {document:document})
-        }
-    })
-}
+export const useFileUpdate = () => {
+  const updateFile = useMutation(api.files.updateFile);
+
+  const update = async ({ fileId, document }: UpdateFileParams) => {
+    try {
+      const result = await updateFile({
+        _id: fileId,
+        document: document,
+        edited: Date.now() // Add the required edited timestamp
+      });
+      return result;
+    } catch (error) {
+      console.error("Failed to update file:", error);
+      throw error;
+    }
+  };
+
+  return { update };
+};

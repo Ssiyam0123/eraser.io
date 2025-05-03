@@ -4,7 +4,6 @@ import React from "react";
 import WorkspaceHeader from "../_components/WorkspaceHeader";
 import EditorComponent from "../_components/EditorComponent";
 import { useParams } from "next/navigation";
-import Canvas from "../_components/Canvas";
 import Whiteboard from "../_components/Whiteboard";
 
 export default function Page() {
