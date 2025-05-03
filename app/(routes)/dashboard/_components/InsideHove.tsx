@@ -17,21 +17,26 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import Loader from "./Loader";
 
-export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
+interface TeamProps {
+  selectedTeamId: any;
+  setSelectedTeamId: any;
+}
+
+export default function InsideHove({
+  selectedTeamId,
+  setSelectedTeamId,
+}: TeamProps) {
   const { user } = useKindeBrowserClient();
   const { getFiles, setGetFiles } = useContext(FileListContext);
   const { data: teamList, isLoading } = useUserTeams();
 
-  const handleTeamSelect = (team) => {
+  const handleTeamSelect = (team: any) => {
     setSelectedTeamId(team?._id);
-
   };
-
-
 
   const router = useRouter();
 
-  const handleRouting = (item) => {
+  const handleRouting = (item: any) => {
     router.push(`${item.path}`);
   };
 
@@ -48,7 +53,7 @@ export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
     },
   ];
 
-  if(isLoading) return <Loader/>
+  if (isLoading) return <Loader />;
 
   return (
     <div className="space-y-4">
@@ -95,13 +100,14 @@ export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
 
       {/* User Info */}
       <div className="flex items-center gap-3">
-        {user && (
+        import Image from 'next/image';
+        {user && user.picture && (
           <Image
             className="rounded-full"
             alt="user logo"
             height={30}
             width={30}
-            src={user?.picture}
+            src={user.picture}
           />
         )}
         <div>
