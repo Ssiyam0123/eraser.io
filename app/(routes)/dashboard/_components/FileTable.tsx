@@ -2,30 +2,34 @@
 
 import { useRouter } from "next/navigation";
 import { GripHorizontal } from "lucide-react";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FileListContext } from "@/app/_context/FilesListContext";
-import { useGetTeamList } from "@/app/hooks/useGetTeamList";
-import { useConvex } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { useTeamFiles } from "@/app/hooks/useTeamFiles";
-import Loader from "./Loader";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Image from "next/image";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-export default function FileTable({ getFiles, data }) {
+// Define types for individual file and component props
+type File = {
+  _id: string;
+  fileName: string;
+  _creationTime: string | number;
+  edited?: string | number;
+};
+
+type FileTableProps = {
+  getFiles: () => Promise<File[]>;
+  data: File[];
+};
+
+export default function FileTable({ getFiles, data }: FileTableProps) {
   const { user } = useKindeBrowserClient();
   const router = useRouter();
-  console.log(data);
 
-  // if(isLoading) return <Loader/>
-
-  if (!getFiles || getFiles.length === 0) {
+  if (!getFiles || data.length === 0) {
     return <div className="text-white p-4">No files found.</div>;
   }
 
@@ -43,42 +47,40 @@ export default function FileTable({ getFiles, data }) {
         </thead>
 
         <tbody className="divide-y divide-white/10 bg-gray-800">
-          {getFiles &&
-            data?.map((file) => (
-              <tr
-                key={file?._id}
-                onClick={() => router.push("workspace/" + file?._id)}
-                className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium"
-              >
-                <td className="cursor-pointer">{file.fileName}</td>
-                <td className="cursor-pointer">
-                  {new Date(file._creationTime).toLocaleString()}
-                </td>
-                <td className="cursor-pointer">
-                  {file?.edited == ""
-                    ? "not edited"
-                    : new Date(file?.edited).toLocaleString()}
-                </td>
-                <td className="cursor-pointer">
-                  <Image
-                    height={40}
-                    width={40}
-                    className="rounded-3xl"
-                    src={user?.picture}
-                  ></Image>
-                </td>
-                <td className="cursor-pointer ">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <GripHorizontal />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-gray-800">
-                      <DropdownMenuItem>Archive</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
-              </tr>
-            ))}
+          {data.map((file) => (
+            <tr
+              key={file._id}
+              onClick={() => router.push("workspace/" + file._id)}
+              className="*:text-white *:px-4 *:py-2 *:whitespace-nowrap *:first:sticky *:first:left-0 *:first:bg-gray-800 *:first:font-medium cursor-pointer"
+            >
+              <td>{file.fileName}</td>
+              <td>{new Date(file._creationTime).toLocaleString()}</td>
+              <td>
+                {file.edited
+                  ? new Date(file.edited).toLocaleString()
+                  : "Not edited"}
+              </td>
+              <td>
+                <Image
+                  height={40}
+                  width={40}
+                  className="rounded-3xl"
+                  src={user?.picture || "/fallback.png"}
+                  alt="User avatar"
+                />
+              </td>
+              <td>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <GripHorizontal />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-gray-800">
+                    <DropdownMenuItem>Archive</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
