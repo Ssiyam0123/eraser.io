@@ -27,8 +27,8 @@ export default function Page() {
           <h2 className="text-white mb-2 text-lg font-semibold">Whiteboard</h2>
           {/* Uncomment your whiteboard when needed */}
           {/* <Editor /> */}
-          <div className=" rounded-lg h-full shadow-md p-4">
-            Whiteboard
+          <div className=" rounded-lg h-full shadow-md p-4 ">
+            
             {/* <Canvas/> */}
             <Whiteboard/>
           </div>
