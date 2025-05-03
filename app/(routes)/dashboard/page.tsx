@@ -7,15 +7,21 @@ import {
   useKindeBrowserClient,
 } from "@kinde-oss/kinde-auth-nextjs";
 import { useConvex, useMutation, useQuery } from "convex/react";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import DashboardHeader from "./_components/DashboardHeader";
 import FileTable from "./_components/FileTable";
 import { useFileList } from "@/app/hooks/useFileList";
+import { useTeamFiles } from "@/app/hooks/useTeamFiles";
+import { FileListContext } from "@/app/_context/FilesListContext";
+import Loader from "./_components/Loader";
 
 export default function Dashboard() {
   const { user }: any = useKindeBrowserClient();
   const convex = useConvex();
 
+  const { getFiles } = useContext(FileListContext);
+
+  const { data, isLoading } = useTeamFiles(getFiles);
   const createUser = useMutation(api.user.createUser);
 
   const checkUser = async () => {
@@ -28,7 +34,6 @@ export default function Dashboard() {
       }).then((resp) => console.log(resp));
     }
   };
-  const {files} = useFileList()
 
   useEffect(() => {
     if (user) {
@@ -36,12 +41,12 @@ export default function Dashboard() {
     }
   }, [user]);
 
+  if (isLoading) return <Loader />;
   return (
     <div>
       <DashboardHeader />
-      
-         <FileTable/>
-      
+
+      <FileTable getFiles={getFiles} data={data} />
     </div>
   );
 }

@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import Loader from "@/app/(routes)/dashboard/_components/Loader";
 
 export default function EditorComponent({ filedId }: { filedId: string }) {
   const editorRef = useRef<EditorJS | null>(null);
@@ -28,12 +29,15 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
   const editorHolder = useRef<HTMLDivElement>(null);
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
+  const [loading, setLoading] = useState(false)
 
   const fetchFile = async () => {
     try {
+        setLoading(true)
       const result = await convex.query(api.files.getFilebyId, { _id:filedId
        });
       setFileData(result);
+      setLoading(false)
       console.log("📄 File data fetched:", result);
     } catch (error) {
       console.error("❌ Failed to fetch file:", error);
@@ -128,6 +132,8 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
       console.error("❌ Failed to save editor content:", error);
     }
   };
+
+  if(loading) return <Loader/>
 
   return (
     <div className="w-full border border-gray-700 rounded p-4 bg-gray-900 text-white space-y-4">

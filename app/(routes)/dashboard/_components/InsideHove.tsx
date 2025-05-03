@@ -15,20 +15,19 @@ import { LogOutIcon, Settings, User2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
+import Loader from "./Loader";
 
 export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
   const { user } = useKindeBrowserClient();
   const { getFiles, setGetFiles } = useContext(FileListContext);
-  const { data: teamList } = useUserTeams();
+  const { data: teamList, isLoading } = useUserTeams();
 
   const handleTeamSelect = (team) => {
     setSelectedTeamId(team?._id);
-    // refetch()
+
   };
 
-  // const { teamList } = useGetTeamList();
 
-  // console.log("from inside hove : ",teamList)
 
   const router = useRouter();
 
@@ -48,6 +47,8 @@ export default function InsideHove({ selectedTeamId, setSelectedTeamId }) {
       path: "settings",
     },
   ];
+
+  if(isLoading) return <Loader/>
 
   return (
     <div className="space-y-4">

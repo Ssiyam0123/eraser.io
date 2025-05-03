@@ -30,7 +30,7 @@ export default function SideNavTop() {
     }
   }, [teams]);
 
-  console.log(getFiles);
+  // console.log(getFiles);
   // Refetch files whenever selected team changes
   useEffect(() => {
     if (selectedTeamId) {

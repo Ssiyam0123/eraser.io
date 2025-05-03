@@ -14,27 +14,16 @@ import { useGetTeamList } from "@/app/hooks/useGetTeamList";
 import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useTeamFiles } from "@/app/hooks/useTeamFiles";
+import Loader from "./Loader";
 
-export default function FileTable() {
-  const { getFiles, setGetFiles } = useContext(FileListContext);
-  // console.log(getFiles)
-  // const { teamList } = useGetTeamList();
-  const {data} = useTeamFiles(getFiles)
-  // const convex = useConvex();
+export default function FileTable({getFiles, data}) {
+  // const { getFiles } = useContext(FileListContext);
+
+  // const {data, isLoading} = useTeamFiles(getFiles)
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const fetchFiles = async () => {
-  //     if (teamList && teamList.length > 0) {
-  //       const result = await convex.query(api.files.getFile, {
-  //         teamId: teamList[0]._id,
-  //       });
-  //       setGetFiles(result);
-  //     }
-  //   };
+  // if(isLoading) return <Loader/>
 
-  //   fetchFiles();
-  // }, [teamList, convex, setGetFiles]);
 
   if (!getFiles || getFiles.length === 0) {
     return <div className="text-white p-4">No files found.</div>;
