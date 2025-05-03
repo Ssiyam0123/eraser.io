@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 export default function Page() {
   const {filedId} = useParams();
   
-  console.log(filedId);
+  // console.log(filedId);
 
   return (
     <div>
@@ -25,7 +25,7 @@ export default function Page() {
           <h2 className="text-white mb-2 text-lg font-semibold">Whiteboard</h2>
           {/* Uncomment your whiteboard when needed */}
           {/* <Editor /> */}
-          <div className="bg-white rounded-lg h-full shadow-md p-4">
+          <div className=" rounded-lg h-full shadow-md p-4">
             Whiteboard placeholder
           </div>
         </div>

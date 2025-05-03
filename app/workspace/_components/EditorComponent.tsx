@@ -17,36 +17,51 @@ import Embed from "@editorjs/embed";
 // History plugin
 import Undo from "editorjs-undo";
 import { Button } from "@/components/ui/button";
-import { useConvex, useMutation, useQueries } from "convex/react";
+import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 
 export default function EditorComponent({ filedId }: { filedId: string }) {
-  console.log(filedId);
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
+  const [fileData, setFileData] = useState<any>(null);
   const editorHolder = useRef<HTMLDivElement>(null);
   const convex = useConvex();
-  const [fileData, setFileData] = useState();
   const updateDocument = useMutation(api.files.updateFile);
 
-  //   const getFile = useMutation(api.files.getFilebyId);
-
   const fetchFile = async () => {
-    const result = await convex.query(api.files.getFilebyId, {filedId});
-    setFileData(result);
+    try {
+      const result = await convex.query(api.files.getFilebyId, { _id:filedId
+       });
+      setFileData(result);
+      console.log("📄 File data fetched:", result);
+    } catch (error) {
+      console.error("❌ Failed to fetch file:", error);
+    }
   };
 
-//   useEffect(() => {
-//     fetchFile();
-//   }, [fileData]);
+  useEffect(() => {
+    fetchFile();
+  }, []);
 
   useEffect(() => {
-    if (!editorRef.current && editorHolder.current) {
+    if (!editorRef.current && editorHolder.current && fileData !== null) {
+      let parsedData = { blocks: [] };
+
+      try {
+        if (fileData.document) {
+          const temp = JSON.parse(fileData.document);
+          if (temp && typeof temp === "object" && "blocks" in temp) {
+            parsedData = temp;
+          }
+        }
+      } catch (error) {
+        console.error("❌ JSON.parse failed:", error);
+      }
+
       const editor = new EditorJS({
         holder: editorHolder.current,
-        data: fileData?.document ? JSON.parse(fileData.document) : { blocks: [] },
-
+        data: parsedData,
         placeholder: "Start creating professional content...",
         tools: {
           header: Header,
@@ -82,7 +97,6 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
           const undo = new Undo({ editor });
           undo.initialize();
 
-          // Add custom keyboard shortcut for Redo
           window.addEventListener("keydown", (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
               e.preventDefault();
@@ -99,35 +113,30 @@ export default function EditorComponent({ filedId }: { filedId: string }) {
         editorRef.current = null;
       };
     }
-  }, []);
+  }, [fileData]);
 
   const handleSave = async () => {
-    if (filedId && editorRef.current) {
-      try {
-        const content = await editorRef.current.save();
-        // console.log("✅ Saved content:", content);
-        console.log("✅ Stringyfy content:", JSON.stringify(content));
-        updateDocument({
-          _id: filedId,
-          document: JSON.stringify(content),
-        });
-        toast.success("file updated successfully");
-        // You can now send this to your backend
-      } catch (err) {
-        console.error("❌ Saving failed", err);
-      }
+    if (!filedId || !editorRef.current) return;
+
+    try {
+      const content = await editorRef.current.save();
+      const document = JSON.stringify(content);
+      await updateDocument({ _id: filedId, document });
+
+      toast.success("✅ File updated successfully!");
+    } catch (error) {
+      console.error("❌ Failed to save editor content:", error);
     }
   };
 
   return (
     <div className="w-full border border-gray-700 rounded p-4 bg-gray-900 text-white space-y-4">
       <div id="editorjs" className="mr-5" ref={editorHolder} />
-      {isEditorReady && (
-        <p className="text-sm text-gray-400">Loading editor...</p>
-      )}
+
+      {isEditorReady && <p className="text-sm text-gray-400">Loading editor...</p>}
 
       <Button
-        className="cursor-pointer  bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
+        className="cursor-pointer bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
         onClick={handleSave}
         disabled={isEditorReady}
       >
