@@ -67,7 +67,7 @@ export default function FileTable({ getFiles, data }) {
                     src={user?.picture}
                   ></Image>
                 </td>
-                <td>
+                <td className="cursor-pointer ">
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       <GripHorizontal />

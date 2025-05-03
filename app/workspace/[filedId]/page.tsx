@@ -4,6 +4,8 @@ import React from "react";
 import WorkspaceHeader from "../_components/WorkspaceHeader";
 import EditorComponent from "../_components/EditorComponent";
 import { useParams } from "next/navigation";
+import Canvas from "../_components/Canvas";
+import Whiteboard from "../_components/Whiteboard";
 
 export default function Page() {
   const {filedId} = useParams();
@@ -26,7 +28,9 @@ export default function Page() {
           {/* Uncomment your whiteboard when needed */}
           {/* <Editor /> */}
           <div className=" rounded-lg h-full shadow-md p-4">
-            Whiteboard placeholder
+            Whiteboard
+            {/* <Canvas/> */}
+            <Whiteboard/>
           </div>
         </div>
       </div>
