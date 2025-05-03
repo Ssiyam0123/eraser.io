@@ -7,7 +7,7 @@ import "@excalidraw/excalidraw/index.css";
 
 export default function Whiteboard() {
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "" }} className="h-screen">
       <Excalidraw />
     </div>
   );
