@@ -27,7 +27,11 @@ export default function EditorComponent({ filedId, commandToSave, setcommandToSa
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
   const [loading, setLoading] = useState(false);
+const [now, setnow] = useState()
 
+useEffect(()=>{
+  setnow()
+})
   // console.log(docData)
 
   const fetchFile = async () => {
