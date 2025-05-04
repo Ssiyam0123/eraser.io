@@ -33,7 +33,7 @@
     "@tanstack/react-query": "^5.75.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "convex": "^1.23.0",
+    "convex": "^1.24.0",
     "daisyui": "^5.0.30",
     "editorjs-undo": "^2.0.28",
     "lucide-react": "^0.503.0",
