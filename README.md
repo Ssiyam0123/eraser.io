@@ -22,26 +22,26 @@ A collaborative, modern, and beautiful whiteboard/editor app powered by [Editor.
 
 ## 🛠️ Tech Stack
 
-### **Frontend**
-- [Next.js 15](https://nextjs.org/)
-- [React 19](https://react.dev/)
-- [Tailwind CSS 4](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
-- [Radix UI](https://www.radix-ui.com/)
-- [Lucide React](https://lucide.dev/)
+### **Frontend** 
+- ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white) [Next.js 15](https://nextjs.org/)
+- ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black) [React 19](https://react.dev/)
+- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) [Tailwind CSS 4](https://tailwindcss.com/)
+- ![DaisyUI](https://img.shields.io/badge/DaisyUI-2E2B5F?style=for-the-badge&logo=daisyui&logoColor=white) [DaisyUI](https://daisyui.com/)
+- ![Radix UI](https://img.shields.io/badge/Radix_UI-000000?style=for-the-badge&logo=radix-ui&logoColor=white) [Radix UI](https://www.radix-ui.com/)
+- ![Lucide React](https://img.shields.io/badge/Lucide-Black?style=for-the-badge&logo=lucide&logoColor=white) [Lucide React](https://lucide.dev/)
 
 ### **Editor Tools**
-- [Editor.js](https://editorjs.io/) & Plugins:
+- ![Editor.js](https://img.shields.io/badge/Editor.js-F6F6F6?style=for-the-badge&logo=editorjs&logoColor=000) [Editor.js](https://editorjs.io/) & Plugins:
   - Paragraph, Header, Quote, Checklist, Code, Embed, Image, List, Table
   - [editorjs-undo](https://www.npmjs.com/package/editorjs-undo)
-- [Excalidraw](https://github.com/excalidraw/excalidraw)
+- ![Excalidraw](https://img.shields.io/badge/Excalidraw-FF4444?style=for-the-badge&logo=excalidraw&logoColor=white) [Excalidraw](https://github.com/excalidraw/excalidraw)
 
 ### **Backend & State**
-- [Convex](https://convex.dev/) — serverless data platform
-- [@tanstack/react-query](https://tanstack.com/query/latest)
+- ![Convex](https://img.shields.io/badge/Convex-FF2A00?style=for-the-badge&logo=convex&logoColor=white) [Convex](https://convex.dev/)
+- ![React Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white) [@tanstack/react-query](https://tanstack.com/query/latest)
 
 ### **Auth**
-- [Kinde Auth](https://kinde.com/)
+- ![Kinde](https://img.shields.io/badge/Kinde_Auth-1F4690?style=for-the-badge&logo=kinde&logoColor=white) [Kinde Auth](https://kinde.com/)
 
 ---
 
