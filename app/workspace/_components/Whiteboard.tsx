@@ -76,6 +76,7 @@ export default function Whiteboard({
               : [],
           }}
           onChange={(excalidrawElements) =>
+            // @ts-ignore
             setUpdateWhiteBord(excalidrawElements)
           }
           theme="dark"

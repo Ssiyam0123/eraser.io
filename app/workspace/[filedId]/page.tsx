@@ -32,6 +32,7 @@ export default function Page() {
           <div className=" rounded-lg h-full shadow-md p-4 ">
             
             {/* <Canvas/> */}
+             {/* @ts-ignore */}
             <Whiteboard filedId={filedId} commandToSave={commandToSave} setcommandToSave={setcommandToSave}/>
           </div>
         </div>
