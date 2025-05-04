@@ -13,7 +13,6 @@ import Table from "@editorjs/table";
 
 import Quote from "@editorjs/quote";
 
-
 // History plugin
 
 import { Button } from "@/components/ui/button";
@@ -23,36 +22,23 @@ import { toast } from "sonner";
 import Loader from "@/app/(routes)/dashboard/_components/Loader";
 
 export default function EditorComponent({ filedId }: { filedId: any }) {
-  console.log(filedId);
+  // console.log("from editor : ",filedId);
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [fileData, setFileData] = useState<any>(null);
+  const [docData, setdocData] = useState([]);
   const editorHolder = useRef<HTMLDivElement>(null);
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
   const [loading, setLoading] = useState(false);
 
-  // const fetchFile = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const result = await convex.query(api.files.getFilebyId, {
-  //       _id: filedId
-  //     });
-  //     setFileData(result);
-  //     setLoading(false);
-  //     console.log("📄 File data fetched:", result);
-  //   } catch (error) {
-  //     console.error("❌ Failed to fetch file:", error);
-  //   }
-  // };
+  // console.log(docData)
 
-  // Your component
   const fetchFile = async () => {
     try {
       setLoading(true);
       const result = await convex.query(api.files.getFileById, {
-        // Note: getFileById (correct casing)
-        _id: filedId, // Note: fileId (correct spelling)
+        _id: filedId,
       });
 
       if (!result) {
@@ -60,7 +46,7 @@ export default function EditorComponent({ filedId }: { filedId: any }) {
       }
 
       setFileData(result);
-      console.log("📄 File data fetched:", result);
+      // console.log("📄 File data fetched:", result);
     } catch (error) {
       console.error("❌ Failed to fetch file:", error);
       toast.error("Failed to load file");
@@ -107,9 +93,8 @@ export default function EditorComponent({ filedId }: { filedId: any }) {
             },
           },
           table: Table,
-          
+
           quote: Quote,
-          
         },
         onReady: () => {
           editorRef.current = editor;

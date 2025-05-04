@@ -90,8 +90,12 @@ export default function InsideHove({
         {/* Logout */}
         <div className="flex items-center justify-between text-lg mt-6 cursor-pointer hover:text-red-500 transition">
           <span>Log out</span>
-          <LogoutLink>
-            <LogOutIcon />
+          <LogoutLink
+            postLogoutRedirectURL={
+              process.env.NEXT_PUBLIC_KINDE_POST_LOGOUT_REDIRECT_URL!
+            }
+          >
+            <LogOutIcon/>
           </LogoutLink>
         </div>
       </div>
@@ -100,14 +104,13 @@ export default function InsideHove({
 
       {/* User Info */}
       <div className="flex items-center gap-3">
-        import Image from 'next/image';
         {user && user.picture && (
           <Image
             className="rounded-full"
             alt="user logo"
             height={30}
             width={30}
-            src={user.picture}
+            src={user?.picture}
           />
         )}
         <div>

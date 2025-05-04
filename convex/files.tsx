@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import Whiteboard from "@/app/workspace/_components/Whiteboard";
 
 export const createFile = mutation({
   args: {
@@ -9,7 +10,7 @@ export const createFile = mutation({
     archive: v.boolean(),
     document: v.string(),
     whiteboard: v.string(),
-    edited : v.string()
+    edited: v.string(),
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.insert("files", args);
@@ -33,17 +34,17 @@ export const getFile = query({
 
 export const updateFile = mutation({
   args: {
-    _id: v.id("files"), 
+    _id: v.id("files"),
     document: v.string(),
-    edited: v.number()
+    edited: v.number(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.patch(args._id, {
-      document: args.document, edited: args.edited
+      document: args.document,
+      edited: args.edited,
     });
   },
 });
-
 
 export const getFileById = query({
   args: {
@@ -57,3 +58,28 @@ export const getFileById = query({
     return file;
   },
 });
+
+export const gerDocById = query({
+  args: {
+    _id: v.id("files"),
+  },
+  handler: async (ctx, args) => {
+    const file = await ctx.db.get(args._id);
+    return file;
+  },
+});
+
+export const updateWhiteDoc = mutation({
+  args: {
+    _id: v.id("files"),
+    document: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args._id, { whiteboard: args.document });
+  },
+});
+
+
+
+
+// convex/files.ts
