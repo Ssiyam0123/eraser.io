@@ -2,7 +2,7 @@
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { Excalidraw, ExcalidrawImperativeAPI } from "@excalidraw/excalidraw";
+import { Excalidraw } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 import { useConvex, useMutation, useQuery } from "convex/react";
 import { useEffect, useRef, useState } from "react";
@@ -38,9 +38,11 @@ export default function Whiteboard({
       console.error("❌ Save error:", err);
     }
   };
+
   useEffect(() => {
     commandToSave && handleUpdate();
   }, [commandToSave]);
+
   const fetchFile = async () => {
     try {
       const result = await convex.query(api.files.getFileById, {
@@ -69,7 +71,9 @@ export default function Whiteboard({
       {fileData && (
         <Excalidraw
           initialData={{
-            elements: JSON.parse(fileData?.whiteboard),
+            elements: fileData?.whiteboard
+              ? JSON.parse(fileData.whiteboard)
+              : [],
           }}
           onChange={(excalidrawElements) =>
             setUpdateWhiteBord(excalidrawElements)

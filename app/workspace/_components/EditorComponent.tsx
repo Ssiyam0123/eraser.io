@@ -10,12 +10,9 @@ import Paragraph from "@editorjs/paragraph";
 import CodeTool from "@editorjs/code";
 import ImageTool from "@editorjs/image";
 import Table from "@editorjs/table";
-
 import Quote from "@editorjs/quote";
 
 // History plugin
-
-import { Button } from "@/components/ui/button";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
@@ -26,7 +23,6 @@ export default function EditorComponent({ filedId, commandToSave, setcommandToSa
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [fileData, setFileData] = useState<any>(null);
-  const [docData, setdocData] = useState([]);
   const editorHolder = useRef<HTMLDivElement>(null);
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
@@ -141,10 +137,6 @@ export default function EditorComponent({ filedId, commandToSave, setcommandToSa
   return (
     <div className="w-full border border-gray-700 rounded p-4 bg-gray-900 text-white space-y-4">
       <div id="editorjs" className="mr-5" ref={editorHolder} />
-
-      {!isEditorReady && (
-        <p className="text-sm text-gray-400">Loading editor...</p>
-      )}
 
       {/* <Button
         className="cursor-pointer bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
