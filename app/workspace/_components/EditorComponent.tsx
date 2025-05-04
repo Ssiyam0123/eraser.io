@@ -21,7 +21,7 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import Loader from "@/app/(routes)/dashboard/_components/Loader";
 
-export default function EditorComponent({ filedId }: { filedId: any }) {
+export default function EditorComponent({ filedId, commandToSave, setcommandToSave }: { filedId: any, commandToSave:boolean, setcommandToSave: (value: boolean) => void;}) {
   // console.log("from editor : ",filedId);
   const editorRef = useRef<EditorJS | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
@@ -124,10 +124,17 @@ export default function EditorComponent({ filedId }: { filedId: any }) {
       });
 
       toast.success("✅ File updated successfully!");
+      setcommandToSave(false)
     } catch (error) {
       console.error("❌ Failed to save editor content:", error);
     }
   };
+
+  useEffect(()=>{
+    commandToSave && handleSave()
+  
+  },[commandToSave])
+
 
   if (loading) return <Loader />;
 
@@ -139,13 +146,13 @@ export default function EditorComponent({ filedId }: { filedId: any }) {
         <p className="text-sm text-gray-400">Loading editor...</p>
       )}
 
-      <Button
+      {/* <Button
         className="cursor-pointer bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700 transition"
         onClick={handleSave}
         disabled={!isEditorReady}
       >
         Save Content
-      </Button>
+      </Button> */}
     </div>
   );
 }

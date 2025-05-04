@@ -10,16 +10,20 @@ import { toast } from "sonner";
 
 type Props = {
   filedId: Id<"files">;
+  commandToSave: boolean;
+  setcommandToSave: (value: boolean) => void;
 };
 
-export default function Whiteboard({ filedId }: Props) {
-  const excalidrawRef = useRef<ExcalidrawImperativeAPI>(null);
+export default function Whiteboard({
+  filedId,
+  commandToSave,
+  setcommandToSave,
+}: Props) {
   const updateWhiteBord = useMutation(api.files.updateWhiteDoc);
-  const fetchedDocFile = useQuery(api.files.gerDocById, { _id: filedId });
+
   const [updateWhite, setUpdateWhiteBord] = useState();
   const [fileData, setFileData] = useState<any>(null);
   const convex = useConvex();
-  console.log(fileData);
 
   const handleUpdate = async () => {
     try {
@@ -27,12 +31,16 @@ export default function Whiteboard({ filedId }: Props) {
         _id: filedId,
         document: JSON.stringify(updateWhite),
       });
+      toast.success("file updated");
+      setcommandToSave(false);
       console.log("✅ Whiteboard saved:", result);
     } catch (err) {
       console.error("❌ Save error:", err);
     }
   };
-
+  useEffect(() => {
+    commandToSave && handleUpdate();
+  }, [commandToSave]);
   const fetchFile = async () => {
     try {
       const result = await convex.query(api.files.getFileById, {
@@ -57,17 +65,9 @@ export default function Whiteboard({ filedId }: Props) {
   }, []);
 
   return (
-    <div className="h-[70vh]">
-      <button
-        onClick={handleUpdate}
-        className="p-2 bg-green-600 text-white rounded mb-2"
-      >
-        Save Whiteboard
-      </button>
-
+    <div className="h-screen">
       {fileData && (
         <Excalidraw
-          ref={excalidrawRef}
           initialData={{
             elements: JSON.parse(fileData?.whiteboard),
           }}
