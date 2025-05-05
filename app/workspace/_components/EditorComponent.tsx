@@ -27,11 +27,11 @@ export default function EditorComponent({ filedId, commandToSave, setcommandToSa
   const convex = useConvex();
   const updateDocument = useMutation(api.files.updateFile);
   const [loading, setLoading] = useState(false);
-const [now, setnow] = useState()
+const [now, setnow] = useState<any>()
 
 useEffect(()=>{
-  setnow()
-})
+  setnow(Date.now() + (performance.now() % 1))
+},[commandToSave])
   // console.log(docData)
 
   const fetchFile = async () => {
@@ -116,11 +116,10 @@ useEffect(()=>{
     try {
       const content = await editorRef.current.save();
       const document = JSON.stringify(content);
-      const editedAt = Date.now() + (performance.now() % 1);
       await updateDocument({
         _id: filedId,
         document: document,
-        edited: editedAt,
+        edited: now,
       });
 
       toast.success("✅ File updated successfully!");
