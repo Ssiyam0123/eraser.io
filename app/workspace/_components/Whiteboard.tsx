@@ -5,7 +5,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { Excalidraw } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 import { useConvex, useMutation, useQuery } from "convex/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -66,14 +66,31 @@ export default function Whiteboard({
     fetchFile();
   }, []);
 
+
+
+
+
+const myObj = useMemo(() => {
+  try {
+    return fileData?.whiteboard ? JSON.parse(fileData.whiteboard) : null;
+  } catch (err) {
+    console.error("Invalid JSON in whiteboard:", err);
+    return null;
+  }
+}, [fileData]);
+
+
+console.log(myObj)
+
+
+
+
   return (
     <div className="h-screen">
-      {fileData && (
+      { fileData && (
         <Excalidraw
           initialData={{
-            elements: fileData?.whiteboard
-              ? JSON.parse(fileData.whiteboard)
-              : [],
+            elements: myObj
           }}
           onChange={(excalidrawElements) =>
             // @ts-ignore
